@@ -1,0 +1,61 @@
+@import @"version.inc";
+
+configurations {
+};
+
+nuget {
+    nuspec {
+        id = portmidi;
+        version : ${package-version};
+        title: PortMidi;
+        authors: {Ross Bencina, Phil Burk, Roger B. Dannenberg};
+        owners: {CoApp Project};
+        licenseUrl: "https://github.com/coapp-packages/portmidi/blob/upstream/license.txt";
+        projectUrl: "http://github.com/coapp-packages/portmidi";
+        requireLicenseAcceptance:false;
+        summary:Platform Independent Library for MIDI I/O;
+        description: @"Platform Independent Library for MIDI I/O.
+homepage: http://portmedia.sourceforge.net/portmidi/";
+        releaseNotes: "Release of PortMidi 217 libraries.";
+        copyright: Copyright 2013;
+        tags: { portmedia, portmidi, midi, native, CoApp };
+
+    };
+
+    // the files that go into the content folders
+    // (inserted into the nuspec file)
+    files {
+        include: {
+            "..\pm_common\portmidi.h",
+            "..\pm_common\pmutil.h",
+            "..\porttime\porttime.h",
+        };
+        
+        source += {
+            "..\pm_win\pmwin.c",
+            "..\pm_win\pmwinmm.c",
+            "..\porttime\ptwinmm.c",
+            "..\pm_common\pmutil.c",
+            "..\pm_common\portmidi.c",
+        };
+
+        ("v100,v110", "Win32,x64", "release,debug", "Dynamic") => {
+            [${0},${1},${2},${3}] {
+                bin:     { .\output\${0}\${1}\${2}\${3}\portmidi.dll };
+                symbols: { .\output\${0}\${1}\${2}\${3}\portmidi.pdb };
+            };
+        };
+        ("v100,v110", "Win32,x64", "release,debug", "Dynamic,Static,ltcg") => {
+            [${0},${1},${2},${3}] {
+                lib:     { .\output\${0}\${1}\${2}\${3}\portmidi.lib };
+            };
+        };
+
+    };
+
+    // the VC++ .targets file that gets generated and inserted into the ${d_content} folder
+    targets {
+        Defines += HAS_PORTMIDI;
+    };
+}
+

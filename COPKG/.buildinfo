@@ -1,0 +1,22 @@
+@import default_tools;
+
+#define {
+    ProjectName = "portmidi";
+    ProjectFiles : {
+        portmidi.vcxproj
+    }; 
+};
+
+default {
+    (PlatformToolsets, Architectures, ReleaseOrDebug, Linkage ) => {
+        .MsBuildEx {
+            MaxThreads = $(MaxThreads);
+            LoadEnvironmentFromTargets = VC_${0}_${1};
+            StartMessage = @"Environment vc_${0}_${1} -- ${2}  ${3} ";
+            Properties= @"PlatformToolset=${0};Platform=${1};Configuration=${2};UsesConfigurationType=${3}";
+            Projects=${ProjectFiles};
+        };
+    };
+    
+    .WaitForTasks { };
+};
