@@ -1,6 +1,11 @@
 @import @"version.inc";
 
 configurations {
+	UserPlatformToolset {
+	    // Needed because autopackage lacks VS2015 support
+    	key = "PlatformToolset";
+    	choices: "v100,v110,v120,v140";
+	};
 };
 
 nuget {
@@ -18,7 +23,7 @@ nuget {
 homepage: http://portmedia.sourceforge.net/portmidi/";
         releaseNotes: "Release of PortMidi 217 libraries.";
         copyright: Copyright 2013;
-        tags: { portmedia, portmidi, midi, native, CoApp };
+        tags: { portmedia, portmidi, midi, native, CoApp, v100, v110, v120, v140, dynamic, static, ltcg };
 
     };
 
@@ -39,13 +44,13 @@ homepage: http://portmedia.sourceforge.net/portmidi/";
             "..\pm_common\portmidi.c",
         };
 
-        ("v100,v110", "Win32,x64", "release,debug", "Dynamic") => {
+        ("v100,v110,v120,v140", "Win32,x64", "release,debug", "Dynamic") => {
             [${0},${1},${2},${3}] {
                 bin:     { .\output\${0}\${1}\${2}\${3}\portmidi.dll };
                 symbols: { .\output\${0}\${1}\${2}\${3}\portmidi.pdb };
             };
         };
-        ("v100,v110", "Win32,x64", "release,debug", "Dynamic,Static,ltcg") => {
+        ("v100,v110,v120,v140", "Win32,x64", "release,debug", "Dynamic,Static,ltcg") => {
             [${0},${1},${2},${3}] {
                 lib:     { .\output\${0}\${1}\${2}\${3}\portmidi.lib };
             };
